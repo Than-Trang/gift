@@ -6,18 +6,21 @@ import boxLid from "./images/box-lid.png";
 import kuku from "./images/jump-character.png";
 // import ConfettiGenerator from "./CanvasConfetti";
 import Confetti from "./confetti/Confetti";
+import sound from "./amthanh/amthanh.mp3";
+import useSound from "use-sound";
 
 const init_state = {
   move: "move",
   jump: "",
   rotated: "",
-  rotating: ""
+  rotating: "",
 };
 export default function GiftBoxAnimation() {
+  const [mp3] = useSound(sound);
   const [state, setState] = useReducer(
     (state, new_state) => ({
       ...state,
-      ...new_state
+      ...new_state,
     }),
     init_state
   );
@@ -26,7 +29,7 @@ export default function GiftBoxAnimation() {
 
   function animate() {
     let isDone = rotated === "rotated" ? true : false;
-
+    mp3();
     if (!isDone) {
       setState({ rotating: "rotating" });
       setTimeout(() => {
