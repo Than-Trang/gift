@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import "./styles.css";
 
 import box from "./images/box.png";
@@ -6,6 +6,8 @@ import boxLid from "./images/box-lid.png";
 import kuku from "./images/jump-character.png";
 // import ConfettiGenerator from "./CanvasConfetti";
 import Confetti from "./confetti/Confetti";
+import Confetti2 from "./confetti/Confetti";
+import Confetti3 from "./confetti/Confetti";
 import sound from "./amthanh/amthanh.mp3";
 import useSound from "use-sound";
 
@@ -16,7 +18,8 @@ const init_state = {
   rotating: "",
 };
 export default function GiftBoxAnimation() {
-  const [mp3] = useSound(sound);
+  const [isPlay, setIsPlay] = useState(true);
+  const [playMp3, { stop }] = useSound(sound);
   const [state, setState] = useReducer(
     (state, new_state) => ({
       ...state,
@@ -29,7 +32,8 @@ export default function GiftBoxAnimation() {
 
   function animate() {
     let isDone = rotated === "rotated" ? true : false;
-    mp3();
+    setIsPlay(!isPlay);
+    Sound(isPlay);
     if (!isDone) {
       setState({ rotating: "rotating" });
       setTimeout(() => {
@@ -44,17 +48,30 @@ export default function GiftBoxAnimation() {
     let moving = move === "move" ? "" : "move";
     setState({ move: moving });
   }
+  let Sound = (x) => {
+    if (x) {
+      playMp3();
+    } else {
+      stop();
+      // console.log(123);
+    }
+  };
 
   return (
     <div className="App">
       <Confetti open={jump === "jump"} />
+      <Confetti2 className="haha" open={jump === "jump"} />
+      <Confetti3 className="hihi" open={jump === "jump"} />
+
       <div className="img-container">
-        <p className={`kuku ${jump} kaka`}>Chúc mừng ngày quốc tế nam giới</p>
+        <p className={`kuku ${jump} kaka`}>Chào mừng ngày quốc tế nam giới</p>
+
+        <img className={`kuku ${jump}`} src={kuku} alt="kuku" />
         <button className="box" onClick={() => animate()}>
           <img className="box_2" src={box} alt="box" />
         </button>
         <img
-          className={`lid ${move} ${rotating} ${rotated} box_2`}
+          className={`lid ${move} ${rotating} ${rotated} box`}
           src={boxLid}
           alt="box-lid"
         />
